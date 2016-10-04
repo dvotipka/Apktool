@@ -45,6 +45,7 @@ allprojects {
     }
 
     jacoco {
+	toolVersion = "0.7.6.201602180812"
     	reportsDir = file("$buildDir/customJacocoReportDir")
     }
 }
@@ -123,6 +124,11 @@ subprojects {
         testLogging {
             exceptionFormat = 'full'
         }
+	jacoco {
+		append = false
+		destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        	classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    	}
     }
 
     jacocoTestReport {
