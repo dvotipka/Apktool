@@ -45,7 +45,6 @@ allprojects {
     }
 
     jacoco {
-	toolVersion = "0.7.4.201502262128"
     	reportsDir = file("$buildDir/customJacocoReportDir")
     }
 }
