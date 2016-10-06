@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class APKTest {
+public class LBEParallelTest {
 
     @BeforeClass
     public static void beforeClass() throws BrutException {
