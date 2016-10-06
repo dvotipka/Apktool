@@ -48,7 +48,7 @@ public class APKTest {
 
     @Test
     public void isProviderStringReplacementWorking() throws BrutException, IOException {
-        String apk = "com.goodrx.apk";
+        String apk = "com.amazon.mShop.android.shopping.apk";
 
         // decode issue636.apk
         ApkDecoder apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
