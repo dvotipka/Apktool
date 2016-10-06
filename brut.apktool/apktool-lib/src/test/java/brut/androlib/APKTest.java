@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ProviderAttributeTest {
+public class APKTest {
 
     @BeforeClass
     public static void beforeClass() throws BrutException {
