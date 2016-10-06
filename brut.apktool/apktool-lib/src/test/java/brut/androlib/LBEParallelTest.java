@@ -48,7 +48,7 @@ public class LBEParallelTest {
 
     @Test
     public void isProviderStringReplacementWorking() throws BrutException, IOException {
-        String apk = "com.lbe.parallel.intl.apk";
+        String apk = "com.jb.zcamera.apk";
 
         // decode issue636.apk
         ApkDecoder apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
