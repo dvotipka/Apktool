@@ -167,3 +167,7 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
         })
     }
 }
+
+task printSrcDirs() << {
+ subprojects.sourceSets.test.allSource.srcDirs.each { println it }
+ }

@@ -15,8 +15,10 @@
  */
 apply plugin: 'eu.appsatori.fatjar'
 
+
 dependencies {
     compile project(':brut.apktool:apktool-lib')
+    testCompile depends.xmlunit
 }
 
 buildscript {
