@@ -51,14 +51,14 @@ public class CLITest {
     public void isProviderStringReplacementWorking() throws BrutException, IOException {
         try{
             String apk = "com.amazon.mShop.android.shopping.apk";
-            String[] arguments = new String[]{"-v","-q","d",apk,"o",sTmpDir + File.separator + apk + ".out"};
+            String[] arguments = new String[]{"-v","-q","d",apk,"o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
             // decode com.jb.zcamera.apk
             brut.apktool.Main.main(arguments);
-            assertTrue(fileExists(sTmpDir + File.separator + apk + ".out"));
+            assertTrue(fileExists(sTmpDir.getAbsolutePath() + File.separator + apk + ".out"));
 
             // build issue636
-            arguments = new String[]{"b",sTmpDir, apk + ".out"};
-            brut.apktool.Main.main(arguments);
+            arguments = new String[]{"b",sTmpDir.getAbsolutePath() + apk + ".out"};
+            Main.main(arguments);
             String newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
             assertTrue(fileExists(newApk));
 
