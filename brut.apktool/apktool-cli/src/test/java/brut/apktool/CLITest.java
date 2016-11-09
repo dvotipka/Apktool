@@ -72,8 +72,8 @@ public class CLITest {
         
         String frameworkpath = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/framework/";
         String framework = "1.apk";
-        String[] arguments = new String[]{"if",frameworkpath + framework, "-t","htc","-p",frameworkpath}
-        Main.main(arguments)
+        arguments = new String[]{"if",frameworkpath + framework, "-t","htc","-p",frameworkpath};
+        Main.main(arguments);
     }
 
     private boolean fileExists(String filepath) {
