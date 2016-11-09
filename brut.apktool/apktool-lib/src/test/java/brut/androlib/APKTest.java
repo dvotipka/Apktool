@@ -59,7 +59,32 @@ public class APKTest {
         ExtFile testApk = new ExtFile(sTmpDir, apk + ".out");
         new Androlib().build(testApk, null);
         String newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
-        assertTrue(fileExists(newApk));
+        //assertTrue(fileExists(newApk));
+        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
+        File apk_dir = new File(apk_dir_path);
+        File[] fileList = apk_dir.listFiles();
+        for(File f : fileList){
+            System.out.println("Running APK: " + apk);
+            apk = f.getName();
+            if(apk.contains(".apk")){
+                try{
+                    apkDecoder = new ApkDecoder(new File(apk_dir_path + File.separator + apk));
+                    apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
+                    apkDecoder.decode();
+
+                    // build issue636
+                    testApk = new ExtFile(sTmpDir, apk + ".out");
+                    new Androlib().build(testApk, null);
+                    newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
+                    //assertTrue(fileExists(newApk));
+                } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for App: " + apk);
+                }
+            
+            }
+        }
+        
 
         // decode issues636 again
 //        apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + newApk));
