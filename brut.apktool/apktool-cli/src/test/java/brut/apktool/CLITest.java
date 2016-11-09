@@ -53,27 +53,42 @@ public class CLITest {
         String apk = "com.amazon.mShop.android.shopping.apk";
         // decode apk
         System.out.println(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
-        String[] arguments = new String[]{"-v","d",apkpath + apk,"-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+        String[] arguments = new String[]{"-v","d",apkpath + apk};
         Main.main(arguments);
-        File f = new File(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
-        if(f.exists() && f.isDirectory()){
-            System.out.println("true");
-        }
-        else{
-            System.out.println("false");
-        }
+        
+        arguments = new String[]{"-v","d",apkpath + apk,"-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+        Main.main(arguments);
+//        File f = new File(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
+//        if(f.exists() && f.isDirectory()){
+//            System.out.println("true");
+//        }
+//        else{
+//            System.out.println("false");
+//        }
         //assertTrue(f.exists() && f.isDirectory());
 
         // build apk
         arguments = new String[]{"-q","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
         Main.main(arguments);
-        String newApk = sTmpDir.getAbsolutePath() + File.separator + apk + ".out" + File.separator + "dist" + File.separator + apk;
+//        String newApk = sTmpDir.getAbsolutePath() + File.separator + apk + ".out" + File.separator + "dist" + File.separator + apk;
         //assertTrue(fileExists(newApk));
         
         String frameworkpath = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/framework/";
         String framework = "1.apk";
         arguments = new String[]{"if",frameworkpath + framework, "-t","htc","-p",frameworkpath};
         Main.main(arguments);
+        
+        arguments = new String[]{""};
+        Main.main(arguments);
+        arguments = new String[]{"version"};
+        Main.main(arguments);
+        
+//        String resourcepath = "/Users/dvotipka/Downloads/test/test2/";
+//        String resource = "resources.arsc";
+//        arguments = new String[]{"publicize-resources",resourcepath + resource};
+//        Main.main(arguments);
+        
+        
     }
 
     private boolean fileExists(String filepath) {
