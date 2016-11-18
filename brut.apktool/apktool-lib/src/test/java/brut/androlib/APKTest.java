@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -53,6 +54,9 @@ public class APKTest {
         // decode issue636.apk
         ApkDecoder apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
         apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
+        apkDecoder.setKeepBrokenResources(true);
+        apkDecoder.setBaksmaliDebugMode(true);
+        apkDecoder.setForceDelete(true);
         apkDecoder.decode();
 
         // build issue636
@@ -60,16 +64,30 @@ public class APKTest {
         new Androlib().build(testApk, null);
         String newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
         //assertTrue(fileExists(newApk));
-        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
+        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks";
         File apk_dir = new File(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
+        fileList = Arrays.copyOfRange(fileList,0,5);
         for(File f : fileList){
             System.out.println("Running APK: " + apk);
             apk = f.getName();
             if(apk.contains(".apk")){
                 try{
+                    Androlib mAndrolib = new Androlib();
+                    ExtFile apkFile = new ExtFile(new File(apk_dir_path + File.separator + apk));
+                    mAndrolib.decodeManifestRaw(apkFile, new File(sTmpDir + File.separator + apk + "rawmanifest.out"));
+                    mAndrolib.decodeManifestFull(new ExtFile(new File(apk_dir_path + File.separator + apk)), new File(sTmpDir + File.separator + apk + "fullmanifest.out"), mAndrolib.getResTable(apkFile,true));
+                    mAndrolib.decodeResourcesRaw(new ExtFile(new File(apk_dir_path + File.separator + apk)), new File(sTmpDir + File.separator + apk + "rawresources.out"));
+                
+                
+                
+                
+                
                     apkDecoder = new ApkDecoder(new File(apk_dir_path + File.separator + apk));
                     apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
+                    apkDecoder.setKeepBrokenResources(false);
+                    apkDecoder.setBaksmaliDebugMode(false);
+                    apkDecoder.setForceDelete(false);
                     apkDecoder.decode();
 
                     // build issue636
