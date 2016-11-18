@@ -50,7 +50,7 @@ public class APKTest {
 
     @Test
     public void isProviderStringReplacementWorking() throws BrutException, IOException {
-        String apk = "com.amazon.mShop.android.shopping.apk";
+        String apk = "testapp.apk";
 
         // decode issue636.apk
         ApkDecoder apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
@@ -62,6 +62,7 @@ public class APKTest {
         
         Androlib mAndrolib = new Androlib();
         AndrolibResources mAndRes = new AndrolibResources();
+        mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
         mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
 
         // build issue636
