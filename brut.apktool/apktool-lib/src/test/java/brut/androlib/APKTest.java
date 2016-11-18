@@ -17,6 +17,7 @@
 package brut.androlib;
 
 import brut.androlib.res.util.ExtFile;
+import brut.androlib.res.AndrolibResources;
 import brut.common.BrutException;
 import brut.directory.DirectoryException;
 import brut.util.OS;
@@ -58,6 +59,10 @@ public class APKTest {
         apkDecoder.setBaksmaliDebugMode(true);
         apkDecoder.setForceDelete(true);
         apkDecoder.decode();
+        
+        Androlib mAndrolib = new Androlib();
+        AndrolibResources mAndRes = new AndrolibResources();
+        mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
 
         // build issue636
         ExtFile testApk = new ExtFile(sTmpDir, apk + ".out");
@@ -73,15 +78,24 @@ public class APKTest {
             apk = f.getName();
             if(apk.contains(".apk")){
                 try{
-                    Androlib mAndrolib = new Androlib();
                     ExtFile apkFile = new ExtFile(new File(apk_dir_path + File.separator + apk));
-                    mAndrolib.decodeManifestRaw(apkFile, new File(sTmpDir + File.separator + apk + "rawmanifest.out"));
-                    mAndrolib.decodeManifestFull(new ExtFile(new File(apk_dir_path + File.separator + apk)), new File(sTmpDir + File.separator + apk + "fullmanifest.out"), mAndrolib.getResTable(apkFile,true));
-                    mAndrolib.decodeResourcesRaw(new ExtFile(new File(apk_dir_path + File.separator + apk)), new File(sTmpDir + File.separator + apk + "rawresources.out"));
-                
-                
-                
-                
+                    File rawmandir = new File(sTmpDir + File.separator + apk + "rawmanifest.out");
+                    File rawresourcesdir = new File(sTmpDir + File.separator + apk + "rawresources.out");
+                    File fullmandir = new File(sTmpDir + File.separator + apk + "fullmanifest.out");
+                    
+                    if(!rawmandir.exists()){
+                        rawmandir.mkdir();
+                    }
+                    if(!fullmandir.exists()){
+                        fullmandir.mkdir();
+                    }
+                    if(!rawresourcesdir.exists()){
+                        rawresourcesdir.mkdir();
+                    }
+                    
+                    mAndrolib.decodeManifestRaw(apkFile, rawmandir);
+                    mAndrolib.decodeManifestFull(apkFile, fullmandir, mAndrolib.getResTable(apkFile,true));
+                    mAndrolib.decodeResourcesRaw(new ExtFile(new File(apk_dir_path + File.separator + apk)), rawresourcesdir);
                 
                     apkDecoder = new ApkDecoder(new File(apk_dir_path + File.separator + apk));
                     apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
