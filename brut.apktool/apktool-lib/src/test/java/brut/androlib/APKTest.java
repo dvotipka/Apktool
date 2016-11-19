@@ -82,7 +82,7 @@ public class APKTest {
         String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
         File apk_dir = new File(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
-        fileList = Arrays.copyOfRange(fileList,0,5);
+        //fileList = Arrays.copyOfRange(fileList,0,5);
         for(File f : fileList){
             System.out.println("Running APK: " + apk);
             apk = f.getName();
