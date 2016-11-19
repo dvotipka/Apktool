@@ -79,7 +79,7 @@ public class APKTest {
             System.err.println("Failed for App: " + apk);
         }
         
-        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks";
+        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
         File apk_dir = new File(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
         fileList = Arrays.copyOfRange(fileList,0,5);
