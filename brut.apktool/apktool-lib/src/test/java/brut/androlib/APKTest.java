@@ -51,25 +51,34 @@ public class APKTest {
     @Test
     public void isProviderStringReplacementWorking() throws BrutException, IOException {
         String apk = "testapp.apk";
-
-        // decode issue636.apk
-        ApkDecoder apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
-        apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
-        apkDecoder.setKeepBrokenResources(true);
-        apkDecoder.setBaksmaliDebugMode(true);
-        apkDecoder.setForceDelete(true);
-        apkDecoder.decode();
-        
+        String newApk = "";
+        ExtFile testApk;
         Androlib mAndrolib = new Androlib();
         AndrolibResources mAndRes = new AndrolibResources();
-        mAndRes.tagResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
-        mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
+        ApkDecoder apkDecoder;
+        
+        try{
+        // decode issue636.apk
+            apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
+            apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
+            apkDecoder.setKeepBrokenResources(true);
+            apkDecoder.setBaksmaliDebugMode(true);
+            apkDecoder.setForceDelete(true);
+            apkDecoder.decode();
+            
+            mAndRes.tagSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
+            mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
 
-        // build issue636
-        ExtFile testApk = new ExtFile(sTmpDir, apk + ".out");
-        new Androlib().build(testApk, null);
-        String newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
-        //assertTrue(fileExists(newApk));
+            // build issue636
+            testApk = new ExtFile(sTmpDir, apk + ".out");
+            new Androlib().build(testApk, null);
+            newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
+            //assertTrue(fileExists(newApk));
+        } catch(Exception e){
+            System.err.println("Caught Exception: " + e.getMessage());
+            System.err.println("Failed for App: " + apk);
+        }
+        
         String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks";
         File apk_dir = new File(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
