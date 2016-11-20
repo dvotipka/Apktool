@@ -74,10 +74,15 @@ public class APKTest {
             new Androlib().build(testApk, null);
             newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
             //assertTrue(fileExists(newApk));
+            
+        } catch(Exception e){
+            System.err.println("Caught Exception: " + e.getMessage());
+            System.err.println("Failed for App: " + apk);
+        }
+        try{
             String arsc_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks/app-debug/resources.arsc";
             mAndRes.publicizeResources(new File(arsc_path));
             mAndRes.getAndroidResourcesFile();
-            
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
             System.err.println("Failed for App: " + apk);
