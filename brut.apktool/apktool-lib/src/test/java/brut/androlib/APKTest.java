@@ -74,12 +74,18 @@ public class APKTest {
             new Androlib().build(testApk, null);
             newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
             //assertTrue(fileExists(newApk));
+            String arsc_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks/app-debug/resources.arsc";
+            mAndRes.publicizeResources(new File(arsc_path));
+            mAndRes.getAndroidResourcesFile();
+            
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
             System.err.println("Failed for App: " + apk);
         }
         
-        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
+        
+        //String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
+        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks";
         File apk_dir = new File(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
         //fileList = Arrays.copyOfRange(fileList,0,5);
