@@ -71,6 +71,8 @@ public class CLITest {
         String aapt_path = "/Users/dvotipka/Library/Android/sdk/build-tools/19.1.0/aapt";
         arguments = new String[]{"-q","-a",aapt_path,"-f","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
         Main.main(arguments);
+        arguments = new String[]{"-v","-a","/aapt","--max-sdk-version","21","-f","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+        Main.main(arguments);
 //        String newApk = sTmpDir.getAbsolutePath() + File.separator + apk + ".out" + File.separator + "dist" + File.separator + apk;
         //assertTrue(fileExists(newApk));
         
