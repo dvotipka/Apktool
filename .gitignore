@@ -21,5 +21,8 @@ bin/
 .idea/*
 /out
 
+# Mac
+*.DS_Store
+
 # gradle/smali-patches patch smali/ into brut.apktool.smali/
 brut.apktool.smali/
