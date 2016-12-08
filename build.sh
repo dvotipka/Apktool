@@ -15,11 +15,6 @@ elif [ $1 -eq 2 ]
    then 
 	mv brut.apktool/apktool-cli/src/main/java/brut/apktool/Main.java.bak brut.apktool/apktool-cli/src/main/java/brut/apktool/Main.java
         sed -i.bak 's/return (id == 0) \? pkgs\[0\] : pkgs\[1\];/return (id == 0) \? pkgs\[1\] : pkgs\[0\];/g' brut.apktool/apktool-lib/src/main/java/brut/androlib/res/AndrolibResources.java
-        cp -R brut.apktool/apktool-lib/build/classes results/mutant1/apktool-lib
-        cp -R brut.apktool/apktool-lib/build/customJacocoReportDir results/mutant1/apktool-lib
-        cp -R brut.apktool/apktool-lib/build/jacoco results/mutant1/apktool-lib/
-        cp -R brut.apktool/apktool-lib/build/reports results/mutant1/apktool-lib
-        cp -R brut.apktool/apktool-lib/build/test-results results/mutant1/apktool-cli/
         cp -R brut.apktool/apktool-cli/build/classes results/mutant1/apktool-cli/
         cp -R brut.apktool/apktool-cli/build/jacoco results/mutant1/apktool-cli/
         cp -R brut.apktool/apktool-cli/build/reports results/mutant1/apktool-cli/
