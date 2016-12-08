@@ -18,6 +18,10 @@ package brut.androlib;
 
 import brut.androlib.res.util.ExtFile;
 import brut.androlib.res.AndrolibResources;
+import brut.androlib.res.data.ResPackage;
+import brut.androlib.res.data.ResResSpec;
+import brut.androlib.res.data.ResID;
+import brut.androlib.res.data.ResTable;
 import brut.common.BrutException;
 import brut.directory.DirectoryException;
 import brut.util.OS;
@@ -52,7 +56,7 @@ public class APKTest {
     public static void beforeClass() throws BrutException {
         TestUtils.cleanFrameworkFile();
         sTmpDir = new ExtFile(OS.createTempDirectory());
-        TestUtils.copyResourceDir(ProviderAttributeTest.class, "brut/apktool/apk1/", sTmpDir);
+        TestUtils.copyResourceDir(APKTest.class, "brut/apktool/", sTmpDir);
         File dir = new File(sTmpDir + File.separator + "apks");
     
         // attempt to create the directory here
@@ -129,11 +133,12 @@ public class APKTest {
         Androlib mAndrolib = new Androlib();
         AndrolibResources mAndRes = new AndrolibResources();
         ApkDecoder apkDecoder;
+        String base_path = APKTest.class.getProtectionDomain().getCodeSource().getLocation().getFile() + "../../../src/test/resources/brut/apktool";
         
         try{
         // decode issue636.apk
-            apkDecoder = new ApkDecoder(new File(sTmpDir + File.separator + apk));
-            apkDecoder.setOutDir(new File(sTmpDir + File.separator + apk + ".out"));
+            apkDecoder = new ApkDecoder(new File(base_path + File.separator + "apk1" + File.separator + apk));
+            apkDecoder.setOutDir(new File(sTmpDir + File.separator + "apk1" + File.separator + apk + ".out"));
             apkDecoder.setKeepBrokenResources(true);
             apkDecoder.setBaksmaliDebugMode(true);
             apkDecoder.setForceDelete(true);
@@ -143,30 +148,56 @@ public class APKTest {
             System.err.println("Failed for App: " + apk);
         }
         try{
-            mAndRes.tagSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
+            mAndRes.tagSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(base_path + File.separator + "apk1" + File.separator + apk)),false),new File(sTmpDir + File.separator + "apk1" + File.separator +  apk + ".out/smali"));
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
             System.err.println("Failed for App: " + apk);
         }
         try{
-            mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(sTmpDir + File.separator + apk)),false),new File(sTmpDir + File.separator + apk + ".out/smali"));
+            mAndRes.updateSmaliResIDs(mAndrolib.getResTable(new ExtFile(new File(base_path + File.separator + "apk1" + File.separator + apk)),false),new File(sTmpDir + File.separator + "apk1" + File.separator + apk + ".out/smali"));
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
             System.err.println("Failed for App: " + apk);
         }
         try{
             // build issue636
-            testApk = new ExtFile(sTmpDir, apk + ".out");
-            new Androlib().build(testApk, null);
-            newApk = apk + ".out" + File.separator + "dist" + File.separator + apk;
-            //assertTrue(fileExists(newApk));
+            testApk = new ExtFile(sTmpDir, "apk1" + File.separator + apk + ".out");
+            Androlib new_androlib = new Androlib();
+            new_androlib.apkOptions.copyOriginalFiles = true;
+            new_androlib.build(testApk, null);
+            
             
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
             System.err.println("Failed for App: " + apk);
         }
+        
+        mAndrolib = new Androlib();
+        mAndRes = new AndrolibResources();
+        
+        testApk = new ExtFile(new ExtFile(new File(base_path)), "apk1/" + File.separator + apk);
+        ResPackage orig_pkg = mAndRes.loadMainPkg(new ResTable(mAndRes), testApk);
+        ResPackage big_pkg = new ResPackage(new ResTable(), orig_pkg.getId(), orig_pkg.getName());
+        System.out.println("big_pkg count = " + big_pkg.getResSpecCount());
+        System.out.println("orig_pkg count = " + orig_pkg.getResSpecCount());
+        List<ResResSpec> orig_resSpecVals = orig_pkg.listResSpecs();
+        for(ResResSpec r : orig_resSpecVals){
+            big_pkg.addResSpec(r);
+        }
+        System.out.println("big_pkg count = " + big_pkg.getResSpecCount());
+        System.out.println("orig_pkg count = " + orig_pkg.getResSpecCount());
+        ResResSpec resSpec = orig_resSpecVals.get(0);
+        ResResSpec new_resSpec = new ResResSpec(new ResID(50),resSpec.getName(),resSpec.getPackage(),resSpec.getType());
+        big_pkg.addResSpec(new_resSpec);
+        
+        System.out.println("big_pkg count = " + big_pkg.getResSpecCount());
+        System.out.println("orig_pkg count = " + orig_pkg.getResSpecCount());
+        ResPackage[] new_pkgs = {big_pkg,orig_pkg,orig_pkg};
+        ResPackage pkg = mAndRes.selectPkgWithMostResSpecs(new_pkgs);
+        assertTrue(pkg.equals(new_pkgs[1]));
+        
         try{
-            String arsc_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks/app-debug/resources.arsc";
+            String arsc_path = base_path + File.separator + "/apks/app-debug/resources.arsc";
             mAndRes.publicizeResources(new File(arsc_path));
         } catch(Exception e){
             System.err.println("Caught Exception: " + e.getMessage());
@@ -180,15 +211,14 @@ public class APKTest {
         }
         
         
-//        String orig_apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
+//        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
         //uploadApks(orig_apk_dir_path);
-        String test_apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apks";
-        String apk_dir_path = sTmpDir + File.separator + "apks";
+        String apk_dir_path = base_path + "/apks";
+//        String apk_dir_path = sTmpDir + File.separator + "apks";
 //        String apk_dir_path = orig_apk_dir_path;
         File apk_dir = new File(apk_dir_path);
-        File test_apk_dir = new File(test_apk_dir_path);
-        downloadFiles(apk_dir_path);
-        File[] fileList = test_apk_dir.listFiles();
+//        downloadFiles(apk_dir_path);
+        File[] fileList = apk_dir.listFiles();
         //fileList = Arrays.copyOfRange(fileList,0,5);
         for(File f : fileList){
             System.out.println("Running APK: " + apk);

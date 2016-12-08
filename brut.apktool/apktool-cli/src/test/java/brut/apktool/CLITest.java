@@ -27,6 +27,8 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -39,25 +41,46 @@ public class CLITest {
     public static void beforeClass() throws BrutException {
         TestUtils.cleanFrameworkFile();
         sTmpDir = new ExtFile(OS.createTempDirectory());
-        TestUtils.copyResourceDir(CLITest.class, "brut/apktool/apk1/", sTmpDir);
+        TestUtils.copyResourceDir(CLITest.class, "../../../../apktool-lib/src/test/resources/brut/apktool/apk1/", sTmpDir);
     }
 
     @AfterClass
     public static void afterClass() throws BrutException {
-        OS.rmdir(sTmpDir);
+        //OS.rmdir(sTmpDir);
+        OS.rmdir("com.amazon.mShop.android.shopping");
     }
 
     @Test
     public void isProviderStringReplacementWorking() throws BrutException, IOException, InterruptedException {
-        String apkpath = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/apk1/";
+        String base_path = CLITest.class.getProtectionDomain().getCodeSource().getLocation().getFile() + "../../../../apktool-lib/src/test/resources/brut/apktool";
+        String apkpath = base_path + File.separator + "apk1/";
         String apk = "com.amazon.mShop.android.shopping.apk";
         // decode apk
         System.out.println(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
-        String[] arguments = new String[]{"-v","d",apkpath + apk};
-        Main.main(arguments);
-        
+        System.out.println("Test1");
+        String[] arguments = new String[]{"-v","d",apkpath + apk,"-f"};
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test2");
         arguments = new String[]{"-v","d",apkpath + apk,"-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
-        Main.main(arguments);
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test3");
+        try{
+            arguments = new String[]{"","d",apkpath + apk,"-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out","-f"};
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
 //        File f = new File(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
 //        if(f.exists() && f.isDirectory()){
 //            System.out.println("true");
@@ -68,28 +91,124 @@ public class CLITest {
         //assertTrue(f.exists() && f.isDirectory());
 
         // build apk
+        System.out.println("Test4");
         String aapt_path = "/Users/dvotipka/Library/Android/sdk/build-tools/19.1.0/aapt";
         arguments = new String[]{"-q","-a",aapt_path,"-f","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
-        Main.main(arguments);
+        
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test5");
         arguments = new String[]{"-v","-a","/aapt","--max-sdk-version","21","-f","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
-        Main.main(arguments);
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
 //        String newApk = sTmpDir.getAbsolutePath() + File.separator + apk + ".out" + File.separator + "dist" + File.separator + apk;
         //assertTrue(fileExists(newApk));
         
         String frameworkpath = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/framework/";
         String framework = "1.apk";
+        System.out.println("Test5");
         arguments = new String[]{"if",frameworkpath + framework, "-t","htc","-p",frameworkpath};
-        Main.main(arguments);
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        
+        
+        System.out.println("Test7");
+        try{
+            arguments = new String[]{"--version"};
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test8");
+        try{
+            arguments = new String[]{"--advanced"};
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test9");
+        try{
+            arguments = new String[]{"publicize-resources",apkpath + apk};
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test10");
+        arguments = new String[]{"-v","d",apkpath + apk,"-s","-f","-b","-t","test","-r","-k","-p",sTmpDir.getAbsolutePath(),"-m","--api","14","-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+//        System.out.println("Test11");
+//        arguments = new String[]{"-v","d",apkpath + apk,"-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+//        try{
+//            Main.main(arguments);
+//        } catch(Exception e){
+//                    System.err.println("Caught Exception: " + e.getMessage());
+//                    System.err.println("Failed for arguments: " + arguments.toString());
+//        }
+//        System.out.println("Test12");
+//        arguments = new String[]{"-v","d",apkpath + "null.apk","-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+//        try{
+//            Main.main(arguments);
+//        } catch(Exception e){
+//                    System.err.println("Caught Exception: " + e.getMessage());
+//                    System.err.println("Failed for arguments: " + arguments.toString());
+//        }
+//        System.out.println("Test12");
+//        arguments = new String[]{"-v","d",apkpath + "null.apk","-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+//        try{
+//            Main.main(arguments);
+//        } catch(Exception e){
+//                    System.err.println("Caught Exception: " + e.getMessage());
+//                    System.err.println("Failed for arguments: " + arguments.toString());
+//        }
+//        System.out.println("Test13");
+//        arguments = new String[]{"-v","d",apkpath + "immutable.apk","-o",sTmpDir.getAbsolutePath() + File.separator + apk + ".out"};
+//        try{
+//            Main.main(arguments);
+//        } catch(Exception e){
+//                    System.err.println("Caught Exception: " + e.getMessage());
+//                    System.err.println("Failed for arguments: " + arguments.toString());
+//        }
+        System.out.println("Test14");
+        arguments = new String[]{"-v","b",sTmpDir.getAbsolutePath() + File.separator + apk + ".out","-d","-v","-c","-p",sTmpDir.getAbsolutePath(),"-o",sTmpDir.getAbsolutePath() + File.separator + apk + "_new.apk"};
+        try{
+            Main.main(arguments);
+        } catch(Exception e){
+                    System.err.println("Caught Exception: " + e.getMessage());
+                    System.err.println("Failed for arguments: " + arguments.toString());
+        }
+        System.out.println("Test6");
+        
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    
+        System.setOut(new PrintStream(outContent));
         
         arguments = new String[]{""};
         Main.main(arguments);
-        arguments = new String[]{"version"};
-        Main.main(arguments);
         
-//        String resourcepath = "/Users/dvotipka/Downloads/test/test2/";
-//        String resource = "resources.arsc";
-//        arguments = new String[]{"publicize-resources",resourcepath + resource};
-//        Main.main(arguments);
+        String sysOut = outContent.toString();
+        assertTrue(sysOut.contains("a tool for reengineering Android apk files"));
+        
+        System.setOut(null);
         
         
     }

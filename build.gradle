@@ -36,9 +36,9 @@ buildscript {
 
 
 apply plugin: 'io.spring.dependency-management'
-apply plugin: "info.solidsoft.pitest"
 apply plugin: 'maven'
 apply from: 'gradle/functions.gradle'
+apply plugin: "info.solidsoft.pitest"
 
 apply plugin: "jacoco"
 
@@ -131,7 +131,7 @@ subprojects {
                 snakeyaml: 'org.yaml:snakeyaml:1.17',
                 smali: 'org.smali:smali:2.1.3',
                 xmlpull: 'xpp3:xpp3:1.1.4c',
-                xmlunit: 'xmlunit:xmlunit:1.3',
+                xmlunit: 'xmlunit:xmlunit:1.3'
         ]
     }
 
@@ -189,6 +189,18 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
             it.exists()
         })
     }
+}
+pitest {
+    targetClasses = ['brut.apktool.*']  //by default "${project.group}.*"
+    pitestVersion = "1.1.0" //not needed when a default PIT version should be used
+    threads = 4
+    outputFormats = ['XML', 'HTML']
+    reportDir = '$buildDir/pitReportDir'
+    mainSourceSets = sourceSets.main.allSource.srcDirs
+    testSourceSets = sourceSets.test.allSource.srcDirs
+    println sourceSets.main.allSource.srcDirs
+    println sourceSets.test.allSource.srcDirs
+    verbose = "on" 
 }
 
 task printSrcDirs() << {
