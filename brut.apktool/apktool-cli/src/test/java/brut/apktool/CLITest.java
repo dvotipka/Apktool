@@ -81,14 +81,6 @@ public class CLITest {
                     System.err.println("Caught Exception: " + e.getMessage());
                     System.err.println("Failed for arguments: " + arguments.toString());
         }
-//        File f = new File(sTmpDir.getAbsolutePath() + File.separator + apk + ".out");
-//        if(f.exists() && f.isDirectory()){
-//            System.out.println("true");
-//        }
-//        else{
-//            System.out.println("false");
-//        }
-        //assertTrue(f.exists() && f.isDirectory());
 
         // build apk
         System.out.println("Test4");
@@ -109,8 +101,6 @@ public class CLITest {
                     System.err.println("Caught Exception: " + e.getMessage());
                     System.err.println("Failed for arguments: " + arguments.toString());
         }
-//        String newApk = sTmpDir.getAbsolutePath() + File.separator + apk + ".out" + File.separator + "dist" + File.separator + apk;
-        //assertTrue(fileExists(newApk));
         
         String frameworkpath = "/Users/dvotipka/Documents/Projects/UMD/CMSC737/ApkToolFork/Apktool/brut.apktool/apktool-lib/src/test/resources/brut/apktool/framework/";
         String framework = "1.apk";
@@ -209,6 +199,7 @@ public class CLITest {
         assertTrue(sysOut.contains("a tool for reengineering Android apk files"));
         
         System.setOut(null);
+        System.out.println("Finished test");
         
         
     }
