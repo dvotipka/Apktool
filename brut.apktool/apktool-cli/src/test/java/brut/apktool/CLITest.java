@@ -189,18 +189,19 @@ public class CLITest {
         System.out.println("Test6");
         
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    
-        System.setOut(new PrintStream(outContent));
+        PrintStream outStream = new PrintStream(outContent);
+        if(outStream == null){
+            System.out.println("Is null");
+        }
+        PrintStream old_out = System.out;
+        System.setOut(outStream);
         
         arguments = new String[]{""};
         Main.main(arguments);
         
         String sysOut = outContent.toString();
         assertTrue(sysOut.contains("a tool for reengineering Android apk files"));
-        
-        System.setOut(null);
-        System.out.println("Finished test");
-        
+        System.setOut(old_out);
         
     }
 
