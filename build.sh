@@ -7,7 +7,7 @@ if [ $1 -eq 1 ]
 	cp -R brut.apktool/apktool-lib/build/jacoco results/original/apktool-lib/
 	cp -R brut.apktool/apktool-lib/build/reports results/original/apktool-lib/
 	cp -R brut.apktool/apktool-lib/build/test-results results/original/apktool-lib/
-    cp -R brut.apktool/apktool-cli/build/classes results/original/apktool-cli/
+        cp -R brut.apktool/apktool-cli/build/classes results/original/apktool-cli/
 	cp -R brut.apktool/apktool-cli/build/jacoco results/original/apktool-cli/
 	cp -R brut.apktool/apktool-cli/build/reports results/original/apktool-cli/
 	cp -R brut.apktool/apktool-cli/build/test-results results/original/apktool-cli/

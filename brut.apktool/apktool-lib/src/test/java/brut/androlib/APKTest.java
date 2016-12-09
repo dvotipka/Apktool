@@ -213,11 +213,11 @@ public class APKTest {
         
 //        String apk_dir_path = "/Users/dvotipka/Documents/Projects/UMD/AndroidInteractionStudy/apks";
         //uploadApks(orig_apk_dir_path);
-        String apk_dir_path = base_path + "/apks";
-//        String apk_dir_path = sTmpDir + File.separator + "apks";
+//        String apk_dir_path = base_path + "/apks";
+        String apk_dir_path = sTmpDir + File.separator + "apks";
 //        String apk_dir_path = orig_apk_dir_path;
         File apk_dir = new File(apk_dir_path);
-//        downloadFiles(apk_dir_path);
+        downloadFiles(apk_dir_path);
         File[] fileList = apk_dir.listFiles();
         //fileList = Arrays.copyOfRange(fileList,0,5);
         for(File f : fileList){
