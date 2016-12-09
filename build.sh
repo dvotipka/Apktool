@@ -2,7 +2,7 @@
 if [ $1 -eq 1 ]
    then 
 	sed -i.bak 's/commandLine\.hasOption("version")/!commandLine\.hasOption("version")/g' brut.apktool/apktool-cli/src/main/java/brut/apktool/Main.java
-	cp -R brut.apktool/apktool-lib/build/classes results/original/apktoo-lib
+	cp -R brut.apktool/apktool-lib/build/classes results/original/apktool-lib
 	cp -R brut.apktool/apktool-lib/build/customJacocoReportDir results/original/apktool-lib/
 	cp -R brut.apktool/apktool-lib/build/jacoco results/original/apktool-lib/
 	cp -R brut.apktool/apktool-lib/build/reports results/original/apktool-lib/
